@@ -434,7 +434,7 @@ class Window(_Window, metaclass=ABCMeta):
         """Un-fullscreen the window"""
 
     @abstractmethod
-    def cmd_bring_to_front(self) -> None:
+    def cmd_bring_to_front(self, floating: bool = True) -> None:
         """Bring the window to the front"""
 
     def cmd_togroup(
