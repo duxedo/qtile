@@ -1835,11 +1835,10 @@ class Window(_Window, base.Window):
     def cmd_toggle_minimize(self):
         self.toggle_minimize()
 
-    def cmd_bring_to_front(self):
-        if self.floating:
-            self.window.configure(stackmode=StackMode.Above)
-        else:
-            self._reconfigure_floating()  # atomatically above
+    def cmd_bring_to_front(self, floating: bool = True):
+        self.window.configure(stackmode=StackMode.Above)
+        if not self.floating and floating:
+            self._reconfigure_floating()
 
     def _is_in_window(self, x, y, window):
         return window.edges[0] <= x <= window.edges[2] and window.edges[1] <= y <= window.edges[3]

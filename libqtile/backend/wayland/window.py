@@ -567,11 +567,13 @@ class Window(typing.Generic[S], _Base, base.Window, HasListeners):
     def cmd_disable_fullscreen(self) -> None:
         self.fullscreen = False
 
-    def cmd_bring_to_front(self) -> None:
+    def cmd_bring_to_front(self, floatig: bool = False) -> None:
         if self.mapped:
             self.core.mapped_windows.remove(self)
             self.core.mapped_windows.append(self)
             self.core.stack_windows()
+            if floatig:
+                self.floating = True
 
     def cmd_kill(self) -> None:
         self.kill()
