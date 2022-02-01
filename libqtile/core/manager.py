@@ -1120,7 +1120,7 @@ class Qtile(CommandObject):
             return
         self.restart()
 
-    def cmd_spawn(self, cmd: str | list[str], shell: bool = False) -> int:
+    def cmd_spawn(self, cmd: str | list[str], shell: bool = False, redirect_output:bool = False) -> int:
         """Run cmd, in a shell or not (default).
 
         cmd may be a string or a list (similar to subprocess.Popen).
@@ -1159,8 +1159,9 @@ class Qtile(CommandObject):
             # close qtile's stdin, stdout, stderr so the called process doesn't
             # pollute our xsession-errors.
             os.close(0)
-            os.close(1)
-            os.close(2)
+            if redirect_output:
+                os.close(1)
+                os.close(2)
 
             pid2 = os.fork()
             if pid2 == 0:
@@ -1191,8 +1192,9 @@ class Qtile(CommandObject):
                     if fd > 0:
                         os.dup2(fd, 0)
 
-                    os.dup2(fd, 1)
-                    os.dup2(fd, 2)
+                    if redirect_output:
+                        os.dup2(fd, 1)
+                        os.dup2(fd, 2)
 
                 try:
                     os.execvp(args[0], args)
