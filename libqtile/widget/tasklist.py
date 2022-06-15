@@ -156,6 +156,7 @@ class TaskList(base._Widget, base.PaddingMixin, base.MarginMixin):
             self.spacing = self.margin_x
 
         self.add_callbacks({"Button1": self.select_window})
+        self.add_callbacks({"Button2": self.close_window})
 
     def box_width(self, text):
         """
@@ -386,6 +387,10 @@ class TaskList(base._Widget, base.PaddingMixin, base.MarginMixin):
     def button_press(self, x, y, button):
         self.clicked = self.get_clicked(x, y)
         base._Widget.button_press(self, x, y, button)
+
+    def close_window(self):
+        if self.clicked:
+            self.clicked.kill()
 
     def select_window(self):
         if self.clicked:
